@@ -6,7 +6,7 @@ include { multiqc } from "../modules/multiqc.nf"
 include { FASTQ_QC } from "../subworkflows/QC.nf"
 include { PIPELINE_INIT } from "../subworkflows/pipeline_init.nf"
 include { CONNOR_UMI_PROCESSING } from "../subworkflows/UMI_processing_with_connor.nf"
-
+include { ALIGNMENT_AND_METHYLATION_CALLING } from "../subworkflows/methylation_alignment.nf"
 //  PIPELINE 1 - DEBUG MODE     
 //  MAIN WORKFLOW FOR PIPELINE 1 - DEBUG MODE
 workflow PIPELINE2{
@@ -27,10 +27,14 @@ workflow PIPELINE2{
         )
 
         CONNOR_UMI_PROCESSING(
-            PIPELINE_INIT.out.samplesheet,
-            BismarkIndex,
-            min_reads,
-            consensus_rate,
-            umi_length
+                        PIPELINE_INIT.out.samplesheet,
+                        BismarkIndex,
+                        min_reads,
+                        consensus_rate,
+                        umi_length
+        )
+        ALIGNMENT_AND_METHYLATION_CALLING(
+            CONNOR_UMI_PROCESSING.out.connor_ch,
+            BismarkIndex
         )
 }
