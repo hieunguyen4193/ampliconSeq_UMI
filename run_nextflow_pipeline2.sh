@@ -7,7 +7,7 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 
 samplesheet="./SampleSheet.csv";
 OUTDIR="./output";
-BismarkIndex="";
+BismarkIndex="/media/hieunguyen/GSHD_HN01/storage/resources/hg19_bismark/";
 min_reads=3;
 consensus_rate=0.6;
 umi_length=6;

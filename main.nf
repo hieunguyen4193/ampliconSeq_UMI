@@ -28,10 +28,9 @@ workflow {
 
     PIPELINE2(
         file(params.SAMPLE_SHEET),
-        params.BismarkIndex,
+        file(params.BismarkIndex),
         params.min_reads,
         params.consensus_rate,
         params.umi_length
     )
 }
-

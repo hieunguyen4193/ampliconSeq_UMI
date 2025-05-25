@@ -2,3 +2,7 @@ output
 .nextflow*
 work
 *.log
+*.tar.gz
+*.zip
+*.tar
+*.gz

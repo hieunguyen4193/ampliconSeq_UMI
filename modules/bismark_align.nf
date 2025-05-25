@@ -9,7 +9,7 @@ process  bismark_alignment {
         tuple val(sample_id), path(fastq1), path(fastq2)
         file(BismarkIndex)
     output:
-        tuple val(sample_id), path("${sample_id}.bismark.bam")
+        tuple val(sample_id), path("*.bam"), emit: bismark_bam
 
     when:
     task.ext.when == null || task.ext.when
