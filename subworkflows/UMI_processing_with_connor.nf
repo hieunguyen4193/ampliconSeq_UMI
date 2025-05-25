@@ -13,7 +13,4 @@ workflow CONNOR_UMI_PROCESSING {
     main:
         bismark_bam = bismark_alignment(input_fastq_ch, BismarkIndex)
         connor_bam = connor_UMI_process(bismark_bam, min_reads, consensus_rate, umi_length)
-    emit:
-        bismark_alignment_out = bismark_bam.out
-        connor_out = connor_bam.out
 }   

@@ -1,3 +1,0 @@
-Sample	fastqc-percent_duplicates	fastqc-percent_gc	fastqc-avg_sequence_length	fastqc-median_sequence_length	fastqc-percent_fails	fastqc-total_sequences
-1-TML1S1_S7501-S7701_R1	87.55227707500576	39.0	100.0	100	30.0	1.33429
-1-TML1S1_S7501-S7701_R2	99.75822347465693	34.0	100.0	100	40.0	1.33429

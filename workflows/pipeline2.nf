@@ -33,5 +33,4 @@ workflow PIPELINE2{
             consensus_rate,
             umi_length
         )
-
 }
