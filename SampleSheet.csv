@@ -1,0 +1,2 @@
+SampleID,FASTQ1,FASTQ2
+1-TML1S1,/media/hieunguyen/HNHD01/raw_data/amplicon_methyl_with_UMI/test_batch/1-TML1S1_S7501-S7701_R1.fastq.gz,/media/hieunguyen/HNHD01/raw_data/amplicon_methyl_with_UMI/test_batch/1-TML1S1_S7501-S7701_R2.fastq.gz
