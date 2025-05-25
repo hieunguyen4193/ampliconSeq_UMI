@@ -11,12 +11,27 @@ tronghieunguyen@pm.me
 nextflow.enable.dsl = 2
 
 include { PIPELINE1 } from "./workflows/pipeline1.nf"
+include { PIPELINE2 } from "./workflows/pipeline2.nf"
 
 workflow {
 
     main:
-    PIPELINE1(
-        file(params.SAMPLE_SHEET)
-    )       
+    // PIPELINE1(
+    //     file(params.SAMPLE_SHEET),
+    //     params.bwa_ref_genome,
+    //     params.fgbio_min_reads,
+    //     params.fgbio_min_input_base_quality,
+    //     params.fgbio_min_base_quality,
+    //     params.fgbio_min_base_error_rate,
+    //     params.FGBIO_FASTQ_TO_BAM_threads
+    // )       
+
+    PIPELINE2(
+        file(params.SAMPLE_SHEET),
+        params.BismarkIndex,
+        params.min_reads,
+        params.consensus_rate,
+        params.umi_length
+    )
 }
 
