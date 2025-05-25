@@ -16,18 +16,21 @@ workflow PIPELINE2{
         min_reads
         consensus_rate
         umi_length
+        add_UMI_to_R2_seqs_sh
 
     main:
         PIPELINE_INIT(
-            input_SampleSheet
-        )
+            input_SampleSheet,
+            umi_length,
+            add_UMI_to_R2_seqs_sh
+        )   
 
         FASTQ_QC(
             PIPELINE_INIT.out.samplesheet
         )
 
         CONNOR_UMI_PROCESSING(
-                        PIPELINE_INIT.out.samplesheet,
+                        PIPELINE_INIT.out.input_modified_fastqs_ch,
                         BismarkIndex,
                         min_reads,
                         consensus_rate,

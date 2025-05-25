@@ -5,7 +5,7 @@
 # input_fastq2="/media/hieunguyen/HNHD01/raw_data/amplicon_methyl_with_UMI/test_batch/1-TML1S1_S7501-S7701_R2.fastq.gz";
 # umi_length=6;
 
-while getopts "f:r:u:" opt; do
+while getopts "f:r:u:o:" opt; do
 case ${opt} in
     f )
       input_fastq1=$OPTARG
@@ -16,17 +16,19 @@ case ${opt} in
     u )
       umi_length=$OPTARG
       ;;
-
+    o )
+      outputdir=$OPTARG
+      ;;
        
     \? )
-      echo "Usage: cmd [-i] inputbam [-o] outputdir [-n] samtools_num_threads [-f] reference genome"
+      echo "Usage: cmd [-f input_fastq1] [-r input_fastq2] [-u umi_length] [-o outputdir]"
       exit 1
       ;;
   esac
 done
 
-input_dir1=$(dirname "${input_fastq1}")
-input_dir2=$(dirname "${input_fastq2}")
+# input_dir1=$(dirname "${input_fastq1}")
+# input_dir2=$(dirname "${input_fastq2}")
 
 fastq2_name=$(basename "${input_fastq2}" | xargs -n 1 basename -s .fastq.gz)
 
@@ -55,9 +57,7 @@ paste <(zcat ${input_fastq2} | awk 'NR%4==1') \
     qual_list.txt \
     <(zcat ${input_fastq2} | awk 'NR%4==2') \
     <(zcat ${input_fastq2} | awk 'NR%4==3') \
-    <(zcat ${input_fastq2} | awk 'NR%4==0') | \
-    
-awk '{print $1"\n"$2$4"\n"$5"\n"$3$6}' | gzip > ${input_dir2}/${fast2_name}.modified.fastq.gz
+    <(zcat ${input_fastq2} | awk 'NR%4==0') | awk '{print $1"\n"$2$4"\n"$5"\n"$3$6}' | gzip > ${outputdir}/${fastq2_name}.modified.fastq.gz
 
 rm -rf umi_list.txt
 rm -rf qual_list.txt

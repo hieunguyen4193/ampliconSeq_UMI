@@ -31,6 +31,7 @@ workflow {
         file(params.BismarkIndex),
         params.min_reads,
         params.consensus_rate,
-        params.umi_length
+        params.umi_length,
+        file(params.add_UMI_to_R2_seqs_sh)
     )
 }
