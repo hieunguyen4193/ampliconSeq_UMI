@@ -18,6 +18,10 @@ process  connor_UMI_process {
 
     script:
     """
-    connor ${bismark_bam} ${sample_id}.connor.bams -s ${min_reads} -f ${consensus_rate} --umt_length ${umi_length} 
+    connor ${bismark_bam} \
+        ${sample_id}.connor.bams \
+        -s ${min_reads} \
+        -f ${consensus_rate} \
+        --umt_length ${umi_length} 
     """
 }
