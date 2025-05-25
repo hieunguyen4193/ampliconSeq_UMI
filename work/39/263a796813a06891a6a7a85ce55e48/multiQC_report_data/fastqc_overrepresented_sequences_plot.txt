@@ -1,0 +1,3 @@
+Sample	Top overrepresented sequence	Sum of remaining overrepresented sequences
+1-TML1S1_S7501-S7701_R1	0.0	0.0
+1-TML1S1_S7501-S7701_R2	79.68657488252178	16.28768858344138

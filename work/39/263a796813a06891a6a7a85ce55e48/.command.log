@@ -1,0 +1,11 @@
+
+/// MultiQC 🔍 v1.29
+
+       file_search | Search path: /media/hieunguyen/HNSD01/src/ampliconSeq_UMI/work/39/263a796813a06891a6a7a85ce55e48/1-TML1S1_S7501-S7701_R1_fastqc.zip
+       file_search | Search path: /media/hieunguyen/HNSD01/src/ampliconSeq_UMI/work/39/263a796813a06891a6a7a85ce55e48/1-TML1S1_S7501-S7701_R2_fastqc.zip
+
+            fastqc | Found 2 reports
+
+     write_results | Data        : multiQC_report_data
+     write_results | Report      : multiQC_report.html
+           multiqc | MultiQC complete
