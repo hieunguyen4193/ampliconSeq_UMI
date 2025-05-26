@@ -1,9 +1,7 @@
 process  multiqc {
     // FastQC quality control for sequencing reads
     cache "deep";
-    publishDir "$params.OUTDIR/01_multiQC"  , mode: "copy"
-    label 'fastqc'
-
+    
     input:
         file(fastqcs)
     output:

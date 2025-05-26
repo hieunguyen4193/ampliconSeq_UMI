@@ -2,9 +2,7 @@ process  FGBIO_GROUP_READS_BY_UMI {
     // FastQC quality control for sequencing reads
     tag "$sample_id"
     cache "deep";
-    publishDir "$params.OUTDIR/FGBIO_GROUP_READS_BY_UMI"  , mode: "copy"
-    label 'fgbio'
-
+    
     input:
         tuple val(sample_id), file(mBAM)
     output:

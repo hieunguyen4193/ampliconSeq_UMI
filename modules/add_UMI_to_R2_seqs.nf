@@ -2,8 +2,6 @@ process  add_UMI_to_R2_seqs {
     // FastQC quality control for sequencing reads
     tag "$sample_id"
     cache "deep";
-    publishDir "$params.OUTDIR/modified_FASTQ"  , mode: "copy"
-    label 'pipeline_init'
 
     input:
         tuple val(sample_id), path(fastq1), path(fastq2)

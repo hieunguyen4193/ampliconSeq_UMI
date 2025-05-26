@@ -2,9 +2,7 @@ process  bismark_alignment {
     // FastQC quality control for sequencing reads
     tag "$sample_id"
     cache "deep";
-    publishDir "$params.OUTDIR/bismark_bam"  , mode: "copy"
-    label 'bismark_alignment'
-
+    
     input:
         tuple val(sample_id), path(fastq1), path(fastq2)
         file(BismarkIndex)

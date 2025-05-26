@@ -2,9 +2,7 @@ process  trim_CutAdapt_AmpliconMethylUMI {
     // FastQC quality control for sequencing reads
     tag "$sample_id"
     cache "deep";
-    publishDir "$params.OUTDIR/trim_CutAdapt_AmpliconMethylUMI"  , mode: "copy"
-    label 'trimming'
-
+    
     input:
         tuple val(sample_id), path(fastq1), path(fastq2)
         val(umi_length)

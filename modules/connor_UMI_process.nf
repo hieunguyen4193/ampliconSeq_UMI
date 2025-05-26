@@ -2,9 +2,7 @@ process  connor_UMI_process {
     // FastQC quality control for sequencing reads
     tag "$sample_id"
     cache "deep";
-    publishDir "$params.OUTDIR/connor_bam"  , mode: "copy"
-    label 'bismark_alignment'
-
+    
     input:
         tuple val(sample_id), file(bismark_bam)
         val min_reads
