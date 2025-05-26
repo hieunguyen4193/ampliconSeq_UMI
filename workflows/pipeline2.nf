@@ -41,7 +41,7 @@ workflow PIPELINE2{
             add_UMI_to_R1_R2_FASTQS
         )
         CONNOR_UMI_PROCESSING(
-            PROCESS_UMI_AND_TRIM.out.trim_out_ch,
+            PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_with_UMI,
             BismarkIndex,
             min_reads,
             consensus_rate,
@@ -49,6 +49,11 @@ workflow PIPELINE2{
         )
         ALIGNMENT_AND_METHYLATION_CALLING(
             CONNOR_UMI_PROCESSING.out.connor_ch,
+            BismarkIndex
+        )
+
+        ALIGNMENT_AND_METHYLATION_CALLING(
+            PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_without_UMI,
             BismarkIndex
         )
 }

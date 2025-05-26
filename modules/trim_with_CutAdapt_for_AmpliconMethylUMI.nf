@@ -11,7 +11,8 @@ process  trim_CutAdapt_AmpliconMethylUMI {
         file(extract_UMI_from_R1)
         file(add_UMI_to_R1_R2_FASTQS)
     output:
-        tuple val(sample_id), path("${sample_id}_R1.modified.fastq.gz"), path("${sample_id}_R2.modified.fastq.gz")
+        tuple val(sample_id), path("${sample_id}_R1.modified.fastq.gz"), path("${sample_id}_R2.modified.fastq.gz"), emit: trimmed_fastqs_with_UMI
+        tuple val(sample_id), path("${sample_id}.trimmed_R1.fastq.gz"), path("${sample_id}.trimmed_R2.fastq.gz"), emit: trimmed_fastqs_without_UMI
     when:
     task.ext.when == null || task.ext.when
 
