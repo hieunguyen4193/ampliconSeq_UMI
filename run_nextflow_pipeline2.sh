@@ -15,8 +15,8 @@ BismarkIndex="/media/hieunguyen/GSHD_HN01/storage/resources/hg19_bismark/";
 min_reads=3;
 consensus_rate=0.6;
 umi_length=6;
-add_UMI_to_R2_seqs_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/add_UMI_to_R2_FASTQ.sh";
-
+extract_UMI_from_R1_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/extract_UMI_from_R1.sh"
+add_UMI_to_R1_R2_FASTQs_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/add_UMI_to_R1_R2_FASTQS.sh"
 workdir="/media/hieunguyen/HNSD01/tmp_nextflow_work";
 
 nextflow run main.nf \
@@ -26,5 +26,8 @@ nextflow run main.nf \
     --min_reads "$min_reads" \
     --consensus_rate "$consensus_rate" \
     --umi_length "$umi_length" \
-    --add_UMI_to_R2_seqs_sh ${add_UMI_to_R2_seqs_sh} \
+    --forward_primer_fa "$forward_primer_fa" \
+    --reverse_primer_fa "$reverse_primer_fa" \
+    --extract_UMI_from_R1_sh "${extract_UMI_from_R1_sh}" \
+    --add_UMI_to_R1_R2_FASTQs_sh "${add_UMI_to_R1_R2_FASTQs_sh}" \
     -resume -c ./dev.config -w ${workdir}

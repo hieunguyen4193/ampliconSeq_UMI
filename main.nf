@@ -32,6 +32,9 @@ workflow {
         params.min_reads,
         params.consensus_rate,
         params.umi_length,
-        file(params.add_UMI_to_R2_seqs_sh)
+        params.forward_primer_fa,
+        params.reverse_primer_fa,
+        file(params.extract_UMI_from_R1),
+        file(params.add_UMI_to_R1_R2_FASTQS)
     )
 }
