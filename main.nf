@@ -10,7 +10,7 @@ tronghieunguyen@pm.me
 
 nextflow.enable.dsl = 2
 
-include { PIPELINE1 } from "./workflows/pipeline1.nf"
+// include { PIPELINE1 } from "./workflows/pipeline1.nf"
 include { PIPELINE2 } from "./workflows/pipeline2.nf"
 
 workflow {
