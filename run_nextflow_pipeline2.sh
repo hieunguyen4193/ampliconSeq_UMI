@@ -8,7 +8,8 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 # samplesheet="./SampleSheet.csv";
 # samplesheet="./SampleSheet.2.csv";
 # samplesheet="./SampleSheet.3.csv";
-samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.csv";
+# samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.csv";
+samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7297.csv";
 # OUTDIR="./output";
 OUTDIR="/media/hieunguyen/HNHD01/outdir/ampliconSeq/R7288"
 mkdir -p ${OUTDIR};
