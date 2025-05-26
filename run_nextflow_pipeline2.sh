@@ -6,18 +6,24 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 # input args
 
 # samplesheet="./SampleSheet.csv";
-samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.csv";
-# OUTDIR="./output";
-OUTDIR="/media/hieunguyen/HNHD01/outdir/ampliconSeq/R7288"
+# samplesheet="./SampleSheet.2.csv";
+samplesheet="./SampleSheet.3.csv";
+# samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.csv";
+OUTDIR="./output";
+# OUTDIR="/media/hieunguyen/HNHD01/outdir/ampliconSeq/R7288"
 mkdir -p ${OUTDIR};
 
 BismarkIndex="/media/hieunguyen/GSHD_HN01/storage/resources/hg19_bismark/";
 min_reads=3;
 consensus_rate=0.6;
 umi_length=6;
+primer_version="20250526";
 extract_UMI_from_R1_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/extract_UMI_from_R1.sh"
 add_UMI_to_R1_R2_FASTQs_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/add_UMI_to_R1_R2_FASTQS.sh"
-workdir="/media/hieunguyen/HNSD01/tmp_nextflow_work";
+forward_primer_fa="./primers/${primer_version}/forward_primers.fa";
+reverse_primer_fa="./primers/${primer_version}/reverse_primers.fa";
+# workdir="/media/hieunguyen/HNSD01/tmp_nextflow_work";
+workdir="./work"
 
 nextflow run main.nf \
     --SAMPLE_SHEET "$samplesheet" \
@@ -28,6 +34,6 @@ nextflow run main.nf \
     --umi_length "$umi_length" \
     --forward_primer_fa "$forward_primer_fa" \
     --reverse_primer_fa "$reverse_primer_fa" \
-    --extract_UMI_from_R1_sh "${extract_UMI_from_R1_sh}" \
-    --add_UMI_to_R1_R2_FASTQs_sh "${add_UMI_to_R1_R2_FASTQs_sh}" \
+    --extract_UMI_from_R1 "${extract_UMI_from_R1_sh}" \
+    --add_UMI_to_R1_R2_FASTQS "${add_UMI_to_R1_R2_FASTQs_sh}" \
     -resume -c ./dev.config -w ${workdir}

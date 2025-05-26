@@ -32,6 +32,10 @@ case ${opt} in
   esac
 done
 
+# Reverse complement UMI list and save to a temporary file using tr and rev
+revcomp_umi_list=$(mktemp)
+cat "${umi_list}" | tr "ATGCatgc" "TACGtacg" | rev > "${revcomp_umi_list}"
+
 paste <(zcat ${input_fastq1} | awk 'NR%4==1') \
     ${umi_list} \
     ${qual_umi_list} \
@@ -42,7 +46,7 @@ paste <(zcat ${input_fastq1} | awk 'NR%4==1') \
     gzip > ${outputdir}/${sample_id}_R1.modified.fastq.gz
 
 paste <(zcat ${input_fastq2} | awk 'NR%4==1') \
-    ${umi_list} \
+    ${revcomp_umi_list} \
     ${qual_umi_list} \
     <(zcat ${input_fastq2} | awk 'NR%4==2') \
     <(zcat ${input_fastq2} | awk 'NR%4==3') \

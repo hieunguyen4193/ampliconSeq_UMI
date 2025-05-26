@@ -29,7 +29,7 @@ process  connor_UMI_process {
         -f ${consensus_rate} \
         --umt_length ${umi_length} \
         --annotated_output_bam  ${sample_id}.connor.fully_annotated.bam \
-        --log_file ${sample_id}.connor.log;
+        --log_file ${sample_id}.connor.log --force;
          
 
     samtools fastq \
