@@ -8,10 +8,12 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 # samplesheet="./SampleSheet.csv";
 # samplesheet="./SampleSheet.2.csv";
 # samplesheet="./SampleSheet.3.csv";
-samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.csv";
+# samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.csv";
 # samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7297.csv";
 # samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7312.csv";
 # OUTDIR="./output";
+
+samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.head5.csv";
 batch_name=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
 
 echo -e "-----"
