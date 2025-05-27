@@ -8,11 +8,17 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 # samplesheet="./SampleSheet.csv";
 # samplesheet="./SampleSheet.2.csv";
 # samplesheet="./SampleSheet.3.csv";
-# samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.csv";
+samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.csv";
 # samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7297.csv";
-samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7312.csv";
+# samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7312.csv";
 # OUTDIR="./output";
-OUTDIR="/media/hieunguyen/HNHD01/outdir/ampliconSeq/R7312"
+batch_name=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
+
+echo -e "-----"
+echo -e "Working on batch: ${batch_name}\n";
+echo -e "-----"
+
+OUTDIR="/media/hieunguyen/HNHD01/outdir/ampliconSeq/${batch_name}"
 mkdir -p ${OUTDIR};
 
 BismarkIndex="/media/hieunguyen/GSHD_HN01/storage/resources/hg19_bismark/";
@@ -25,25 +31,28 @@ extract_UMI_from_R1_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/extract
 add_UMI_to_R1_R2_FASTQs_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/add_UMI_to_R1_R2_FASTQS.sh"
 forward_primer_fa="./primers/${primer_version}/forward_primers.fa";
 reverse_primer_fa="./primers/${primer_version}/reverse_primers.fa";
-workdir="/media/hieunguyen/HNSD01/tmp_nextflow_work";
+workdir="/media/hieunguyen/HNSD01/${batch_name}";
 # workdir="./work"
 
-nextflow run main.nf \
-    --SAMPLE_SHEET "$samplesheet" \
-    --OUTDIR "$OUTDIR" \
-    --BismarkIndex "$BismarkIndex" \
-    --min_family_size_threshold "$min_family_size_threshold" \
-    --consensus_rate "$consensus_rate" \
-    --umi_length "$umi_length" \
-    --umt_distance_threshold "${umt_distance_threshold}" \
-    --forward_primer_fa "$forward_primer_fa" \
-    --reverse_primer_fa "$reverse_primer_fa" \
-    --extract_UMI_from_R1 "${extract_UMI_from_R1_sh}" \
-    --add_UMI_to_R1_R2_FASTQS "${add_UMI_to_R1_R2_FASTQs_sh}" \
-    -resume -c ./configs/main.config -w ${workdir} \
-     -with-report "${OUTDIR}/report.html" \
-    -with-timeline "${OUTDIR}/timeline.html" \
-    -with-dag "${OUTDIR}/dag.svg"
+for processing_umi_or_not in withUMI withoutUMI; do \
+    nextflow run main.nf \
+        --SAMPLE_SHEET "$samplesheet" \
+        --OUTDIR "$OUTDIR" \
+        --BismarkIndex "$BismarkIndex" \
+        --min_family_size_threshold "$min_family_size_threshold" \
+        --consensus_rate "$consensus_rate" \
+        --umi_length "$umi_length" \
+        --umt_distance_threshold "${umt_distance_threshold}" \
+        --forward_primer_fa "$forward_primer_fa" \
+        --reverse_primer_fa "$reverse_primer_fa" \
+        --extract_UMI_from_R1 "${extract_UMI_from_R1_sh}" \
+        --add_UMI_to_R1_R2_FASTQS "${add_UMI_to_R1_R2_FASTQs_sh}" \
+        --processing_umi_or_not "${processing_umi_or_not}" \
+        -resume -c ./configs/main.config -w ${workdir} \
+        -with-report "${OUTDIR}/report.html" \
+        -with-timeline "${OUTDIR}/timeline.html" \
+        -with-dag "${OUTDIR}/dag.svg";
+    done
 
 # loggings all input params
 echo -e "-----------------------------------------------------------------------------" >> -${OUTDIR}/params.log
