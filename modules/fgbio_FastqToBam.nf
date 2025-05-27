@@ -2,9 +2,7 @@ process  FGBIO_FASTQ_TO_BAM {
     // FastQC quality control for sequencing reads
     tag "$sample_id"
     cache "deep";
-    publishDir "$params.OUTDIR/FGBIO_FASTQ_TO_BAM"  , mode: "copy"
-    label 'fgbio'
-
+    
     input:
         tuple val(sample_id), path(fastq1), path(fastq2)
     output:

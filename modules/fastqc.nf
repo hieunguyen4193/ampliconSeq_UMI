@@ -2,9 +2,7 @@ process  fastqc {
     // FastQC quality control for sequencing reads
     tag "$sample_id"
     cache "deep";
-    publishDir "$params.OUTDIR/01_FASTQC"  , mode: "copy"
-    label 'fastqc'
-
+    
     input:
         tuple val(sample_id), path(fastq1), path(fastq2)
     output:

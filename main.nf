@@ -10,7 +10,7 @@ tronghieunguyen@pm.me
 
 nextflow.enable.dsl = 2
 
-include { PIPELINE1 } from "./workflows/pipeline1.nf"
+// include { PIPELINE1 } from "./workflows/pipeline1.nf"
 include { PIPELINE2 } from "./workflows/pipeline2.nf"
 
 workflow {
@@ -31,6 +31,10 @@ workflow {
         file(params.BismarkIndex),
         params.min_reads,
         params.consensus_rate,
-        params.umi_length
+        params.umi_length,
+        file(params.forward_primer_fa),
+        file(params.reverse_primer_fa),
+        file(params.extract_UMI_from_R1),
+        file(params.add_UMI_to_R1_R2_FASTQS)
     )
 }

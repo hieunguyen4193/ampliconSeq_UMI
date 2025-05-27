@@ -5,7 +5,11 @@ include { multiqc } from "../modules/multiqc.nf"
 // include SUB-WORKFLOWS
 include { FASTQ_QC } from "../subworkflows/QC.nf"
 include { PIPELINE_INIT } from "../subworkflows/pipeline_init.nf"
+include { PROCESS_UMI_AND_TRIM } from "../subworkflows/process_UMI_and_trim.nf"
 include { CONNOR_UMI_PROCESSING } from "../subworkflows/UMI_processing_with_connor.nf"
+include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI } from "../subworkflows/methylation_alignment.nf"
+include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI } from "../subworkflows/methylation_alignment.nf"
+
 
 //  PIPELINE 1 - DEBUG MODE     
 //  MAIN WORKFLOW FOR PIPELINE 1 - DEBUG MODE
@@ -16,21 +20,41 @@ workflow PIPELINE2{
         min_reads
         consensus_rate
         umi_length
+        forward_primer_fa
+        reverse_primer_fa
+        extract_UMI_from_R1
+        add_UMI_to_R1_R2_FASTQS
+        
 
     main:
         PIPELINE_INIT(
             input_SampleSheet
-        )
+        )   
 
         FASTQ_QC(
             PIPELINE_INIT.out.samplesheet
         )
-
-        CONNOR_UMI_PROCESSING(
+        PROCESS_UMI_AND_TRIM(
             PIPELINE_INIT.out.samplesheet,
+            umi_length,
+            forward_primer_fa,
+            reverse_primer_fa,
+            extract_UMI_from_R1,
+            add_UMI_to_R1_R2_FASTQS
+        )
+        CONNOR_UMI_PROCESSING(
+            PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_with_UMI,
             BismarkIndex,
             min_reads,
             consensus_rate,
             umi_length
+        )
+        // ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI(
+        //     CONNOR_UMI_PROCESSING.out.connor_ch,
+        //     BismarkIndex
+        // )
+        ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI(
+            PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_without_UMI,
+            BismarkIndex
         )
 }

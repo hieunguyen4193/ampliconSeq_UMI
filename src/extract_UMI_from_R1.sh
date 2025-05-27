@@ -1,4 +1,3 @@
-
 #!/bin/bash
 # Example
 # input_fastq1="/media/hieunguyen/HNHD01/raw_data/amplicon_methyl_with_UMI/test_batch/1-TML1S1_S7501-S7701_R1.fastq.gz";
@@ -30,8 +29,6 @@ done
 # input_dir1=$(dirname "${input_fastq1}")
 # input_dir2=$(dirname "${input_fastq2}")
 
-fastq2_name=$(basename "${input_fastq2}" | xargs -n 1 basename -s .fastq.gz)
-
 zcat ${input_fastq1} | \
 awk -v umi_length=${umi_length} '{
     if(NR%4==1) {
@@ -47,20 +44,7 @@ awk -v umi_length=${umi_length} '{
     }
 }' | gzip > extracted_UMI.fastq.gz
 
-
-
-zcat extracted_UMI.fastq.gz | awk 'NR%4==2' > umi_list.txt
-zcat extracted_UMI.fastq.gz | awk 'NR%4==0' > qual_list.txt
-
-paste <(zcat ${input_fastq2} | awk 'NR%4==1') \
-    umi_list.txt \
-    qual_list.txt \
-    <(zcat ${input_fastq2} | awk 'NR%4==2') \
-    <(zcat ${input_fastq2} | awk 'NR%4==3') \
-    <(zcat ${input_fastq2} | awk 'NR%4==0') | awk '{print $1"\n"$2$4"\n"$5"\n"$3$6}' | gzip > ${outputdir}/${fastq2_name}.modified.fastq.gz
-
-rm -rf umi_list.txt
-rm -rf qual_list.txt
-rm -rf extracted_UMI.fastq.gz
+zcat extracted_UMI.fastq.gz | awk 'NR%4==2' > ${outputdir}/umi_list.txt;
+zcat extracted_UMI.fastq.gz | awk 'NR%4==0' > ${outputdir}/qual_list.txt;
 
 # EOF

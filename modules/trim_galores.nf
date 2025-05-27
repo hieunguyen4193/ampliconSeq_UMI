@@ -2,9 +2,7 @@ process  trimGalore {
     // FastQC quality control for sequencing reads
     tag "$sample_id"
     cache "deep";
-    publishDir "$params.OUTDIR/trimGalore"  , mode: "copy"
-    label 'trimming'
-
+    
     input:
         tuple val(sample_id), path(fastq1), path(fastq2)
     output:

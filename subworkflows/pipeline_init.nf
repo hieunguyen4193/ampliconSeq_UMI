@@ -1,3 +1,5 @@
+include { add_UMI_to_R2_seqs } from "../modules/add_UMI_to_R2_seqs.nf"
+
 workflow PIPELINE_INIT {
     take:
     //  path to the input samplesheet .csv file, the sampleshet file should contain the columns SampleID, FASTQ1, and FASTQ2
@@ -12,6 +14,7 @@ workflow PIPELINE_INIT {
         .splitCsv(header: true)
         .map { row -> tuple(row.SampleID, file(row.FASTQ1), file(row.FASTQ2))}
         .set{input_fastq_ch}
+    
     emit:
     samplesheet = input_fastq_ch // emit to the samplesheet channel, use as input for other downstream processes
 }

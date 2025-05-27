@@ -2,9 +2,7 @@ process  connor_UMI_process {
     // FastQC quality control for sequencing reads
     tag "$sample_id"
     cache "deep";
-    publishDir "$params.OUTDIR/connor_bam"  , mode: "copy"
-    label 'bismark_alignment'
-
+    
     input:
         tuple val(sample_id), file(bismark_bam)
         val min_reads
@@ -29,7 +27,7 @@ process  connor_UMI_process {
         -f ${consensus_rate} \
         --umt_length ${umi_length} \
         --annotated_output_bam  ${sample_id}.connor.fully_annotated.bam \
-        --log_file ${sample_id}.connor.log;
+        --log_file ${sample_id}.connor.log --force;
          
 
     samtools fastq \

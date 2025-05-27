@@ -2,9 +2,7 @@ process  FGBIO_CONSENSUS_U_BAM_TO_FASTQ {
     // FastQC quality control for sequencing reads
     tag "$sample_id"
     cache "deep";
-    publishDir "$params.OUTDIR/FGBIO_CONSENSUS_U_BAM_TO_FASTQ"  , mode: "copy"
-    label 'fgbio'
-
+    
     input:
        tuple val(sample_id), file("${sample_id}.consensus.unmapped.bam")
        
