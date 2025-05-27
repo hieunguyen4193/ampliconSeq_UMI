@@ -16,7 +16,8 @@ OUTDIR="/media/hieunguyen/HNHD01/outdir/ampliconSeq/R7312"
 mkdir -p ${OUTDIR};
 
 BismarkIndex="/media/hieunguyen/GSHD_HN01/storage/resources/hg19_bismark/";
-min_reads=3;
+min_family_size_threshold=3;
+umt_distance_threshold=0;
 consensus_rate=0.6;
 umi_length=6;
 primer_version="20250526";
@@ -31,9 +32,10 @@ nextflow run main.nf \
     --SAMPLE_SHEET "$samplesheet" \
     --OUTDIR "$OUTDIR" \
     --BismarkIndex "$BismarkIndex" \
-    --min_reads "$min_reads" \
+    --min_family_size_threshold "$min_family_size_threshold" \
     --consensus_rate "$consensus_rate" \
     --umi_length "$umi_length" \
+    --umt_distance_threshold "${umt_distance_threshold}" \
     --forward_primer_fa "$forward_primer_fa" \
     --reverse_primer_fa "$reverse_primer_fa" \
     --extract_UMI_from_R1 "${extract_UMI_from_R1_sh}" \

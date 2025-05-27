@@ -5,9 +5,10 @@ process  connor_UMI_process {
     
     input:
         tuple val(sample_id), file(bismark_bam)
-        val min_reads
         val consensus_rate
         val umi_length
+        val min_family_size_threshold 
+        val umt_distance_threshold 
     output:
         tuple val(sample_id), path("${sample_id}.connor_R1.fastq.gz"), path("${sample_id}.connor_R2.fastq.gz"), emit: connor_fastqs
         tuple val(sample_id), path("${sample_id}.connor.bam"), emit: connor_bam
@@ -23,9 +24,10 @@ process  connor_UMI_process {
     samtools index ${sample_id}.bismark.sorted.bam;
     connor ${sample_id}.bismark.sorted.bam \
         ${sample_id}.connor.bam \
-        -s ${min_reads} \
-        -f ${consensus_rate} \
+        --consensus_freq_threshold  ${consensus_rate} \
         --umt_length ${umi_length} \
+        --min_family_size_threshold ${min_family_size_threshold} \
+        --umt_distance_threshold  ${umt_distance_threshold } \
         --annotated_output_bam  ${sample_id}.connor.fully_annotated.bam \
         --log_file ${sample_id}.connor.log --force;
          
