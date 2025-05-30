@@ -13,18 +13,19 @@ include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING
 
 //  PIPELINE 1 - DEBUG MODE     
 //  MAIN WORKFLOW FOR PIPELINE 1 - DEBUG MODE
-workflow PIPELINE2{
+workflow PIPELINE_CONNOR{
     take:
         input_SampleSheet // path to the input samplesheet .csv file, the sampleshet file should contain the columns SampleID, FASTQ1, and FASTQ2
         BismarkIndex
-        min_reads
         consensus_rate
         umi_length
         forward_primer_fa
         reverse_primer_fa
         extract_UMI_from_R1
         add_UMI_to_R1_R2_FASTQS
-        
+        min_family_size_threshold
+        umt_distance_threshold
+        processing_umi_or_not
 
     main:
         PIPELINE_INIT(
@@ -45,16 +46,20 @@ workflow PIPELINE2{
         CONNOR_UMI_PROCESSING(
             PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_with_UMI,
             BismarkIndex,
-            min_reads,
             consensus_rate,
-            umi_length
+            umi_length,
+            min_family_size_threshold,
+            umt_distance_threshold
         )
-        // ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI(
-        //     CONNOR_UMI_PROCESSING.out.connor_ch,
-        //     BismarkIndex
-        // )
-        ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI(
-            PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_without_UMI,
-            BismarkIndex
-        )
+        if (processing_umi_or_not == "withUMI"){
+            ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI(
+                CONNOR_UMI_PROCESSING.out.connor_ch,
+                BismarkIndex
+            )
+        } else {
+            ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI(
+                PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_without_UMI,
+                BismarkIndex
+            )
+        }
 }
