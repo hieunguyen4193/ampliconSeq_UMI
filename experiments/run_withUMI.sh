@@ -18,12 +18,6 @@ echo -e "-----"
 echo -e "Working on batch: ${BATCH_NAME}\n";
 echo -e "-----"
 
-OUTDIR="${OUTDIR}/${BATCH_NAME}"
-mkdir -p ${OUTDIR};
-
-WORKDIR="${WORKDIR}/${BATCH_NAME}";
-mkdir -p ${WORKDIR};
-
 BismarkIndex="/workdir/resources/hg19";
 primer_version="20250526";
 forward_primer_fa="../primers/${primer_version}/Vi_Lung_panel.forward_primers.fa";
