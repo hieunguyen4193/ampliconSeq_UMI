@@ -41,7 +41,7 @@ mkdir -p ${OUTDIR};
 WORKDIR="${WORKDIR}/${BATCH_NAME}/UMT_DISTANCE_${umt_distance_threshold}";
 mkdir -p ${WORKDIR};
 
-nextflow run main.nf \
+nextflow run ../main.nf \
         --SAMPLE_SHEET "${samplesheet}" \
         --OUTDIR "${OUTDIR}" \
         --BismarkIndex "${BismarkIndex}" \
