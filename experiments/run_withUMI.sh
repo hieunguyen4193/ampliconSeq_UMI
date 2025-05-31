@@ -1,60 +1,63 @@
 # nextflow on conda in my home server
 source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
-# conda install -c bioconda nextflow -y
+
+# conda env export > environment_nextflow_dev.yml
+# conda env create -f environment_nextflow_dev.yml
 
 #-----
 # input args
 
-# samplesheet="./SampleSheet.csv";
-# samplesheet="./SampleSheet.2.csv";
-# samplesheet="./SampleSheet.3.csv";
-# samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.csv";
-# samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7297.csv";
-# samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7312.csv";
-# OUTDIR="./output";
+samplesheet="./SampleSheet_noUMI_runs.csv";
+OUTDIR="/workdir/outdir";
+WORKDIR="/workdir/work"; 
+UMI_in_read_or_not="withoutUMI";
 
-samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.head5.csv";
-batch_name=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
+BATCH_NAME=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
 
 echo -e "-----"
-echo -e "Working on batch: ${batch_name}\n";
+echo -e "Working on batch: ${BATCH_NAME}\n";
 echo -e "-----"
 
-OUTDIR="/media/hieunguyen/HNHD01/outdir/ampliconSeq/${batch_name}"
+OUTDIR="${OUTDIR}/${BATCH_NAME}"
 mkdir -p ${OUTDIR};
 
-BismarkIndex="/media/hieunguyen/GSHD_HN01/storage/resources/hg19_bismark/";
+WORKDIR="${WORKDIR}/${BATCH_NAME}";
+mkdir -p ${WORKDIR};
+
+BismarkIndex="/workdir/resources/hg19";
+primer_version="20250526";
+forward_primer_fa="./primers/${primer_version}/Vi_Lung_panel.forward_primers.fa";
+reverse_primer_fa="./primers/${primer_version}/Vi_Lung_panel.reverse_primers.fa";
 min_family_size_threshold=3;
-umt_distance_threshold=0;
 consensus_rate=0.6;
 umi_length=6;
-primer_version="20250526";
-extract_UMI_from_R1_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/extract_UMI_from_R1.sh"
-add_UMI_to_R1_R2_FASTQs_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/add_UMI_to_R1_R2_FASTQS.sh"
-forward_primer_fa="./primers/${primer_version}/forward_primers.fa";
-reverse_primer_fa="./primers/${primer_version}/reverse_primers.fa";
-workdir="/media/hieunguyen/HNSD01/${batch_name}";
-# workdir="./work"
+umt_distance_threshold=1;
+extract_UMI_from_R1_sh="../src/extract_UMI_from_R1.sh"
+add_UMI_to_R1_R2_FASTQs_sh="../src/add_UMI_to_R1_R2_FASTQS.sh"
 
-for processing_umi_or_not in withUMI withoutUMI; do \
-    nextflow run main.nf \
-        --SAMPLE_SHEET "$samplesheet" \
-        --OUTDIR "$OUTDIR" \
-        --BismarkIndex "$BismarkIndex" \
-        --min_family_size_threshold "$min_family_size_threshold" \
-        --consensus_rate "$consensus_rate" \
-        --umi_length "$umi_length" \
+OUTDIR="${OUTDIR}/${BATCH_NAME}/UMT_DISTANCE_${umt_distance_threshold}"
+mkdir -p ${OUTDIR};
+
+WORKDIR="${WORKDIR}/${BATCH_NAME}/UMT_DISTANCE_${umt_distance_threshold}";
+mkdir -p ${WORKDIR};
+
+nextflow run main.nf \
+        --SAMPLE_SHEET "${samplesheet}" \
+        --OUTDIR "${OUTDIR}" \
+        --BismarkIndex "${BismarkIndex}" \
+        --min_family_size_threshold "${min_family_size_threshold}" \
+        --consensus_rate "${consensus_rate}" \
+        --umi_length "${umi_length}" \
         --umt_distance_threshold "${umt_distance_threshold}" \
-        --forward_primer_fa "$forward_primer_fa" \
-        --reverse_primer_fa "$reverse_primer_fa" \
+        --forward_primer_fa "${forward_primer_fa}" \
+        --reverse_primer_fa "${reverse_primer_fa}" \
         --extract_UMI_from_R1 "${extract_UMI_from_R1_sh}" \
         --add_UMI_to_R1_R2_FASTQS "${add_UMI_to_R1_R2_FASTQs_sh}" \
-        --processing_umi_or_not "${processing_umi_or_not}" \
-        -resume -c ./configs/main.config -w ${workdir} \
+        -resume -c ./configs/main.config \
+        -w ${WORKDIR} \
         -with-report "${OUTDIR}/report.html" \
         -with-timeline "${OUTDIR}/timeline.html" \
         -with-dag "${OUTDIR}/dag.svg";
-    done
 
 # loggings all input params
 echo -e "-----------------------------------------------------------------------------" >> ${OUTDIR}/params.log

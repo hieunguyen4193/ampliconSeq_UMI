@@ -13,4 +13,4 @@ workflow ALIGNMENT_AND_METHYLATION_CALLING {
 
     emit:
         methyl_density_ch = methyl_density       
-}   
+}
