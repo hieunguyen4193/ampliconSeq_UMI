@@ -7,7 +7,7 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 #-----
 # input args
 
-samplesheet="./SampleSheet_noUMI_runs.csv";
+samplesheet="./SampleSheet_UMI_runs.csv";
 OUTDIR="/workdir/outdir";
 WORKDIR="/workdir/work"; 
 UMI_in_read_or_not="withoutUMI";
@@ -41,6 +41,7 @@ mkdir -p ${OUTDIR};
 WORKDIR="${WORKDIR}/${BATCH_NAME}/UMT_DISTANCE_${umt_distance_threshold}";
 mkdir -p ${WORKDIR};
 
+UMI_in_read_or_not="withUMI";
 nextflow run ../main.nf \
         --SAMPLE_SHEET "${samplesheet}" \
         --OUTDIR "${OUTDIR}" \
@@ -53,6 +54,7 @@ nextflow run ../main.nf \
         --reverse_primer_fa "${reverse_primer_fa}" \
         --extract_UMI_from_R1 "${extract_UMI_from_R1_sh}" \
         --add_UMI_to_R1_R2_FASTQS "${add_UMI_to_R1_R2_FASTQs_sh}" \
+        --UMI_in_read_or_not "${UMI_in_read_or_not}" \
         -resume -c ../configs/main.config \
         -w ${WORKDIR} \
         -with-report "${OUTDIR}/report.html" \

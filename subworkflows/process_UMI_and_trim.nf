@@ -19,7 +19,7 @@ workflow PROCESS_UMI_AND_TRIM {
         )
     
     emit:
-    trimmed_fastqs_with_UMI = trim_CutAdapt_AmpliconMethylUMI.out.trimmed_fastqs_with_UMI
-    trimmed_fastqs_without_UMI = trim_CutAdapt_AmpliconMethylUMI.out.trimmed_fastqs_without_UMI
+    trimmed_fastqs_with_UMI = trim_CutAdapt_AmpliconMethylUMI.out.CutAdapt_fastqs_with_UMI
+    trimmed_fastqs_without_UMI = trim_CutAdapt_AmpliconMethylUMI.out.CutAdapt_fastqs
      // emit to the samplesheet channel, use as input for other downstream processes
 }
