@@ -8,8 +8,8 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 # input args
 
 samplesheet="./SampleSheet_noUMI_runs.csv";
-OUTDIR="";
-WORKDIR=""; 
+OUTDIR="/workdir/outdir";
+WORKDIR="/workdir/work";
 UMI_in_read_or_not="withoutUMI";
 
 BATCH_NAME=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
