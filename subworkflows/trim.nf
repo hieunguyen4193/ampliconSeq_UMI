@@ -12,6 +12,6 @@ workflow TRIM {
             reverse_primer_fa
         )
     emit:
-    trimmed_fastq = trim_CutAdapt.out.trimmed_fastqs
+    trimmed_fastqs = trim_CutAdapt.out.trimmed_fastqs
      // emit to the samplesheet channel, use as input for other downstream processes
 }
