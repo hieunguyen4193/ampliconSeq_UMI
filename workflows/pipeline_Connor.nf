@@ -46,9 +46,6 @@ workflow PIPELINE_CONNOR{
             min_family_size_threshold,
             umt_distance_threshold
             )
-        FASTQ_QC(
-            CONNOR_UMI_PROCESSING.out.connor_ch
-        )
         // align and call methylation using the UMI processed reads
         ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI(
             CONNOR_UMI_PROCESSING.out.connor_ch,

@@ -53,7 +53,7 @@ nextflow run ../main.nf \
         --reverse_primer_fa "${reverse_primer_fa}" \
         --extract_UMI_from_R1 "${extract_UMI_from_R1_sh}" \
         --add_UMI_to_R1_R2_FASTQS "${add_UMI_to_R1_R2_FASTQs_sh}" \
-        -resume -c ./configs/main.config \
+        -resume -c ../configs/main.config \
         -w ${WORKDIR} \
         -with-report "${OUTDIR}/report.html" \
         -with-timeline "${OUTDIR}/timeline.html" \
