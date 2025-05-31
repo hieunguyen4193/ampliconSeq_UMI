@@ -1,5 +1,6 @@
 include { trim_CutAdapt } from '../modules/trim_with_CutAdapt.nf'
 include { fastqc as fastqc_after_trim} from '../modules/fastqc.nf'
+include { multiqc as multiqc_after_trim } from '../modules/multiqc.nf'
 
 workflow TRIM {
     take:
@@ -12,8 +13,8 @@ workflow TRIM {
             forward_primer_fa,
             reverse_primer_fa
         )
-    fastqc_outputs = fastqc_after_trim(trim_CutAdapt.trimmed_fastqs)
-    multiqc( fastqc_outputs.fastqc_zip.collect() )
+        fastqc_outputs = fastqc_after_trim(trim_CutAdapt)
+        multiqc_after_trim( fastqc_outputs.fastqc_zip.collect() )
 
     emit:
     trimmed_fastqs = trim_CutAdapt.out.trimmed_fastqs
