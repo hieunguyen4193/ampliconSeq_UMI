@@ -1,0 +1,7 @@
+SampleID,fastq1,fastq2
+1-DML4BCDMR__S7507-S7707,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/1-DML4BCDMR__S7507-S7707_R1.fastq.gz,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/1-DML4BCDMR__S7507-S7707_R2.fastq.gz
+2-DML4BCDMR__S7508-S7708,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/2-DML4BCDMR__S7508-S7708_R1.fastq.gz,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/2-DML4BCDMR__S7508-S7708_R2.fastq.gz
+3-DML4BCDMR__S7509-S7709,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/3-DML4BCDMR__S7509-S7709_R1.fastq.gz,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/3-DML4BCDMR__S7509-S7709_R2.fastq.gz
+4-DML4BCDMR__S7510-S7710,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/4-DML4BCDMR__S7510-S7710_R1.fastq.gz,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/4-DML4BCDMR__S7510-S7710_R2.fastq.gz
+5-DML4BCDMR__S7511-S7711,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/5-DML4BCDMR__S7511-S7711_R1.fastq.gz,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/5-DML4BCDMR__S7511-S7711_R2.fastq.gz
+6-DML4BCDMR__S7512-S7712,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/6-DML4BCDMR__S7512-S7712_R1.fastq.gz,/mnt/DATASM14/hieunho/hieu_gitlab/batch_22112022/input/target_methylation_R6823/6-DML4BCDMR__S7512-S7712_R2.fastq.gz

@@ -7,8 +7,8 @@ include { FASTQ_QC } from "../subworkflows/QC.nf"
 include { PIPELINE_INIT } from "../subworkflows/pipeline_init.nf"
 include { PROCESS_UMI_AND_TRIM } from "../subworkflows/process_UMI_and_trim.nf"
 include { CONNOR_UMI_PROCESSING } from "../subworkflows/UMI_processing_with_connor.nf"
-include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI } from "../subworkflows/methylation_alignment.nf"
-include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI } from "../subworkflows/methylation_alignment.nf"
+include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI } from "../subworkflows/bismark_after_UMI_processing.nf"
+include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI } from "../subworkflows/bismark_after_UMI_processing.nf"
 
 
 //  PIPELINE 1 - DEBUG MODE     
