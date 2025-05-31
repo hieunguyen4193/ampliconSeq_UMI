@@ -28,9 +28,6 @@ workflow PIPELINE_NO_UMI{
             forward_primer_fa,
             reverse_primer_fa
         )
-        FASTQ_QC(
-            TRIM.out.trimmed_fastqs
-        )        
         ALIGNMENT_AND_METHYLATION_CALLING_NO_UMI(
             TRIM.out.trimmed_fastqs,
             BismarkIndex
