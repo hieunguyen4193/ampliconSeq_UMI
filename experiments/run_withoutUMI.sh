@@ -23,8 +23,8 @@ mkdir -p ${OUTDIR};
 
 BismarkIndex="/workdir/resources/hg19";
 primer_version="20250526";
-forward_primer_fa="./primers/${primer_version}/Vi_Lung_panel.forward_primers.fa";
-reverse_primer_fa="./primers/${primer_version}/Vi_Lung_panel.reverse_primers.fa";
+forward_primer_fa="../primers/${primer_version}/Vi_Lung_panel.forward_primers.fa";
+reverse_primer_fa="../primers/${primer_version}/Vi_Lung_panel.reverse_primers.fa";
 WORKDIR="${WORKDIR}/${BATCH_NAME}";
 
 nextflow run ../main.nf \

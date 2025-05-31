@@ -26,8 +26,8 @@ mkdir -p ${WORKDIR};
 
 BismarkIndex="/workdir/resources/hg19";
 primer_version="20250526";
-forward_primer_fa="./primers/${primer_version}/Vi_Lung_panel.forward_primers.fa";
-reverse_primer_fa="./primers/${primer_version}/Vi_Lung_panel.reverse_primers.fa";
+forward_primer_fa="../primers/${primer_version}/Vi_Lung_panel.forward_primers.fa";
+reverse_primer_fa="../primers/${primer_version}/Vi_Lung_panel.reverse_primers.fa";
 min_family_size_threshold=3;
 consensus_rate=0.6;
 umi_length=6;

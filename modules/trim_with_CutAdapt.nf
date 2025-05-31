@@ -8,7 +8,7 @@ process  trim_CutAdapt {
         file(forward_primer_fa)
         file(reverse_primer_fa)
     output:
-        tuple val(sample_id), path("${sample_id}.CutAdapt_R1.fastq.gz"), path("${sample_id}.CutAdapt_R2.fastq.gz")
+        tuple val(sample_id), path("${sample_id}.CutAdapt_R1.fastq.gz"), path("${sample_id}.CutAdapt_R2.fastq.gz"), emit: trimmed_fastqs
     when:
     task.ext.when == null || task.ext.when
 

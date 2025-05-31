@@ -13,7 +13,7 @@ workflow TRIM {
             forward_primer_fa,
             reverse_primer_fa
         )
-        fastqc_outputs = fastqc_after_trim(trim_CutAdapt)
+        fastqc_outputs = fastqc_after_trim(trim_CutAdapt.out.trimmed_fastqs)
         multiqc_after_trim( fastqc_outputs.fastqc_zip.collect() )
 
     emit:
