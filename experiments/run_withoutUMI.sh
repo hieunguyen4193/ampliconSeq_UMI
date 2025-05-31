@@ -39,7 +39,7 @@ nextflow run ../main.nf \
     -with-report "${OUTDIR}/report.html" \
     -with-timeline "${OUTDIR}/timeline.html" \
     -with-dag "${OUTDIR}/dag.svg";
-done
+
 
 # loggings all input params
 echo -e "-----------------------------------------------------------------------------" >> ${OUTDIR}/params.log

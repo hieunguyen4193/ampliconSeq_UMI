@@ -1,4 +1,4 @@
-include { trim_CutAdapt_AmpliconMethylUMI } from '../modules/trim_with_CutAdapt_for_AmpliconMethylUMI.nf'
+include { trim_CutAdapt_AmpliconMethylUMI } from '../modules/process_UMI_and_trim_with_CutAdapt.nf'
 
 workflow PROCESS_UMI_AND_TRIM {
     take:
