@@ -30,7 +30,7 @@ reverse_primer_fa="./primers/${primer_version}/reverse_primers.fa";
 workdir="/media/hieunguyen/HNSD01/${batch_name}";
 # UMI_in_read_or_not="withUMI";
 UMI_in_read_or_not="extractUMIonly"
-
+trim_algorithm="
 # workdir="./work"
 
     nextflow run main.nf \
@@ -46,6 +46,7 @@ UMI_in_read_or_not="extractUMIonly"
         --extract_UMI_from_R1 "${extract_UMI_from_R1_sh}" \
         --add_UMI_to_R1_R2_FASTQS "${add_UMI_to_R1_R2_FASTQs_sh}" \
         --UMI_in_read_or_not ${UMI_in_read_or_not} \
+        --trim_algorithm ${trim_algorithm}
         -resume -c ./configs/main.config \
         -w ${workdir} \
         -with-report "${OUTDIR}/report.html" \

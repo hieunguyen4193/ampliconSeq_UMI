@@ -15,6 +15,7 @@ workflow PIPELINE_NO_UMI_V1_1{
         BismarkIndex
         forward_primer_fa
         reverse_primer_fa
+        trim_algorithm
         
     main:
         PIPELINE_INIT(
@@ -26,7 +27,8 @@ workflow PIPELINE_NO_UMI_V1_1{
         TRIM(
             PIPELINE_INIT.out.samplesheet,
             forward_primer_fa,
-            reverse_primer_fa
+            reverse_primer_fa,
+            trim_algorithm
         )
         ALIGNMENT_AND_METHYLATION_CALLING_NO_UMI(
             TRIM.out.trimmed_fastqs,

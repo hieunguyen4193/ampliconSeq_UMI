@@ -1,4 +1,4 @@
-process  trimGalore {
+process  trim_Galore {
     // FastQC quality control for sequencing reads
     tag "$sample_id"
     cache "deep";
@@ -13,14 +13,15 @@ process  trimGalore {
 
     script:
     """
-    trim_galore \
-        --fastqc \
-        --gzip \
-        --paired \
+    trim_galore --paired \
         ${fastq1} ${fastq2} \
-        --cores ${params.TrimCores} \
-        --basename ${sample_id}.trimGalore \
-        --clip_r1 ${params.TrimClipR1} \
-        --clip_r2 ${params.TrimClipR2}
+        --cores 5 \
+        --basename $sample_id  \
+        --clip_r2 8 \
+        --three_prime_clip_r1 15 \
+        --three_prime_clip_r2 15 \
+        --gzip -o .
+    mv ${sample_id}_val_1.fq.gz ${sample_id}.trimGalore_R1.fastq.gz
+    mv ${sample_id}_val_2.fq.gz ${sample_id}.trimGalore_R2.fastq.gz
     """
 }
