@@ -13,6 +13,7 @@ process  trim_CutAdapt_AmpliconMethylUMI {
     output:
         tuple val(sample_id), path("${sample_id}_R1.UMIprocessed.fastq.gz"), path("${sample_id}_R2.UMIprocessed.fastq.gz"), emit: CutAdapt_fastqs_with_UMI
         tuple val(sample_id), path("${sample_id}.CutAdapt_R1.fastq.gz"), path("${sample_id}.CutAdapt_R2.fastq.gz"), emit: CutAdapt_fastqs
+        tuple val(sample_id), path("${sample_id}.UMI.txt"), emit: UMI_list
     when:
     task.ext.when == null || task.ext.when
 
@@ -37,6 +38,8 @@ process  trim_CutAdapt_AmpliconMethylUMI {
         -q qual_list.txt \
         -o . \
         -s ${sample_id}
+    
+    mv umi_list.txt ${sample_id}.UMI.txt
     """
 }
 

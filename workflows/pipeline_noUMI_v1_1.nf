@@ -9,7 +9,7 @@ include { TRIM } from "../subworkflows/trim.nf"
 include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING_NO_UMI } from "../subworkflows/bismark_methylation_calling.nf"
 
 // MAIN WORKFLOW: INPUT FASTQS --> PREPROCESS THE UMI --> ALIGN AND CALL METHYLATION
-workflow PIPELINE_NO_UMI{
+workflow PIPELINE_NO_UMI_V1_1{
     take:
         input_SampleSheet // path to the input samplesheet .csv file, the sampleshet file should contain the columns SampleID, FASTQ1, and FASTQ2
         BismarkIndex

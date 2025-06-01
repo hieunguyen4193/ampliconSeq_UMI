@@ -10,7 +10,6 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 samplesheet="./SampleSheet_UMI_runs.csv";
 OUTDIR="/workdir/outdir";
 WORKDIR="/workdir/work"; 
-UMI_in_read_or_not="withoutUMI";
 
 BATCH_NAME=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
 
@@ -74,6 +73,6 @@ echo "forward_primer_fa: $forward_primer_fa" >> ${OUTDIR}/params.log
 echo "reverse_primer_fa: $reverse_primer_fa" >> ${OUTDIR}/params.log
 echo "extract_UMI_from_R1: $extract_UMI_from_R1_sh" >> ${OUTDIR}/params.log
 echo "add_UMI_to_R1_R2_FASTQs: $add_UMI_to_R1_R2_FASTQs_sh" >> ${OUTDIR}/params.log
-echo "workdir: $workdir" >> ${OUTDIR}/params.log
+echo "workdir: $WORKDIR" >> ${OUTDIR}/params.log
 echo -e "-----------------------------------------------------------------------------" >> ${OUTDIR}/params.log
 

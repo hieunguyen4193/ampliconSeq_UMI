@@ -7,47 +7,49 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 #-----
 # input args
 
-samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.head5.csv";
-batch_name=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
+samplesheet="./SampleSheet_UMI_runs.csv";
+OUTDIR="/workdir/outdir";
+WORKDIR="/workdir/work"; 
+
+BATCH_NAME=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
 
 echo -e "-----"
-echo -e "Working on batch: ${batch_name}\n";
+echo -e "Working on batch: ${BATCH_NAME}\n";
 echo -e "-----"
 
-OUTDIR="/media/hieunguyen/HNHD01/outdir/ampliconSeq/${batch_name}"
-mkdir -p ${OUTDIR};
-
-BismarkIndex="/media/hieunguyen/GSHD_HN01/storage/resources/hg19_bismark/";
+BismarkIndex="/workdir/resources/hg19";
+primer_version="20250526";
+forward_primer_fa="../primers/${primer_version}/Vi_Lung_panel.forward_primers.fa";
+reverse_primer_fa="../primers/${primer_version}/Vi_Lung_panel.reverse_primers.fa";
 min_family_size_threshold=3;
-umt_distance_threshold=0;
 consensus_rate=0.6;
 umi_length=6;
-primer_version="20250526";
-extract_UMI_from_R1_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/extract_UMI_from_R1.sh"
-add_UMI_to_R1_R2_FASTQs_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/add_UMI_to_R1_R2_FASTQS.sh"
-forward_primer_fa="./primers/${primer_version}/forward_primers.fa";
-reverse_primer_fa="./primers/${primer_version}/reverse_primers.fa";
-workdir="/media/hieunguyen/HNSD01/${batch_name}";
-# UMI_in_read_or_not="withUMI";
-UMI_in_read_or_not="extractUMIonly"
+umt_distance_threshold=1;
+extract_UMI_from_R1_sh="../src/extract_UMI_from_R1.sh"
+add_UMI_to_R1_R2_FASTQs_sh="../src/add_UMI_to_R1_R2_FASTQS.sh"
 
-# workdir="./work"
+OUTDIR="${OUTDIR}/${BATCH_NAME}/UMT_DISTANCE_${umt_distance_threshold}"
+mkdir -p ${OUTDIR};
 
-    nextflow run main.nf \
-        --SAMPLE_SHEET "$samplesheet" \
-        --OUTDIR "$OUTDIR" \
-        --BismarkIndex "$BismarkIndex" \
-        --min_family_size_threshold "$min_family_size_threshold" \
-        --consensus_rate "$consensus_rate" \
-        --umi_length "$umi_length" \
+WORKDIR="${WORKDIR}/${BATCH_NAME}/UMT_DISTANCE_${umt_distance_threshold}";
+mkdir -p ${WORKDIR};
+
+UMI_in_read_or_not="extractUMIonly";
+nextflow run ../main.nf \
+        --SAMPLE_SHEET "${samplesheet}" \
+        --OUTDIR "${OUTDIR}" \
+        --BismarkIndex "${BismarkIndex}" \
+        --min_family_size_threshold "${min_family_size_threshold}" \
+        --consensus_rate "${consensus_rate}" \
+        --umi_length "${umi_length}" \
         --umt_distance_threshold "${umt_distance_threshold}" \
-        --forward_primer_fa "$forward_primer_fa" \
-        --reverse_primer_fa "$reverse_primer_fa" \
+        --forward_primer_fa "${forward_primer_fa}" \
+        --reverse_primer_fa "${reverse_primer_fa}" \
         --extract_UMI_from_R1 "${extract_UMI_from_R1_sh}" \
         --add_UMI_to_R1_R2_FASTQS "${add_UMI_to_R1_R2_FASTQs_sh}" \
-        --UMI_in_read_or_not ${UMI_in_read_or_not} \
-        -resume -c ./configs/main.config \
-        -w ${workdir} \
+        --UMI_in_read_or_not "${UMI_in_read_or_not}" \
+        -resume -c ../configs/main.config \
+        -w ${WORKDIR} \
         -with-report "${OUTDIR}/report.html" \
         -with-timeline "${OUTDIR}/timeline.html" \
         -with-dag "${OUTDIR}/dag.svg";
@@ -71,6 +73,6 @@ echo "forward_primer_fa: $forward_primer_fa" >> ${OUTDIR}/params.log
 echo "reverse_primer_fa: $reverse_primer_fa" >> ${OUTDIR}/params.log
 echo "extract_UMI_from_R1: $extract_UMI_from_R1_sh" >> ${OUTDIR}/params.log
 echo "add_UMI_to_R1_R2_FASTQs: $add_UMI_to_R1_R2_FASTQs_sh" >> ${OUTDIR}/params.log
-echo "workdir: $workdir" >> ${OUTDIR}/params.log
+echo "workdir: $WORKDIR" >> ${OUTDIR}/params.log
 echo -e "-----------------------------------------------------------------------------" >> ${OUTDIR}/params.log
 
