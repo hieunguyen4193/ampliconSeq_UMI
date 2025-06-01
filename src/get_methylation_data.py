@@ -15,29 +15,17 @@ tqdm.pandas()
 warnings.filterwarnings("ignore")
 from panel_configs import *
 
-##### input args
-# output_version = "20250401"
-# mode = "directional" # "directional" or "non-directional"
-# run = "R6973"
-# region_version = "v0.2"
-# pic = "Vi"
+# EXAMPLES  
+# inputdir = "/media/hieunguyen/HNHD01/raw_data/targetMethyl_analysis/target_methylation_R6782_no_dedup_without_non_directional/06_methylation_extract"
+# outputdir = "/media/hieunguyen/HNHD01/outdir/ampliconSeq/data_analysis/test_get_methylation_data"
 # path_to_all_fa = "/media/hieunguyen/GSHD_HN01/storage/resources/hg19"
-
-##### HELPER FUNCTIONS
-def count_read_in_region(bam_path, region, chr_mode = False):
-    all_reads = []
-    bamfile = pysam.AlignmentFile(bam_path, "rb")
-    if chr_mode:
-        region = f"chr{region}"
-    fetched_obj = bamfile.fetch(region = region)
-    for read in fetched_obj:
-        all_reads.append(read)
-    return(len(all_reads))
-    
-##### get refseq function
-def get_refseq(path_to_all_fa, chrom, start, end):
-    refseq = pyfaidx.Fasta(os.path.join(path_to_all_fa, "chr{}.fa".format(chrom)))
-    return(str.upper(refseq.get_seq(name = "chr{}".format(chrom), start = start, end = end).seq))
+# output_version = "20250601"
+# mode = "directional"
+# run = "R6782"
+# region_version = "CRC_1.1"
+# pic = "Vi"
+# path_to_control450 = "/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/CONTROL114_ref_data"
+# beddir = "/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/panel_design/beds"
 
 ##### MAIN RUN
 def main():
@@ -67,9 +55,8 @@ def main():
     beddir = args.beddir
     
     print(f'Input directory containing all .cov files for this run: {inputdir}')
-
+    
     path_to_main_output = os.path.join(outputdir,
-                                    "targetMethyl_analysis", 
                                     output_version, 
                                     f"{pic}_output", 
                                     mode, 
@@ -94,16 +81,15 @@ def main():
     metadata["Run"] = run
     metadata["PIC"] = pic
     metadata["bam_path"] = metadata["path"].apply(lambda x: str(x)\
-                                                  .replace("06_methylation_extract", "05_sorted_bam")\
+                                                    .replace("06_methylation_extract", "05_sorted_bam")\
                                                     .replace(".bedGraph.gz.bismark.zero.cov", ".sorted.bam"))
     metadata = metadata[(metadata["mode"] == mode) & (metadata["PIC"] == pic)]
-    print(metadata)
     metadata.to_excel(os.path.join(path_to_main_output, "metadata.xlsx"), index = False)
 
     ##### regiondf for hg19
     regiondf = pd.read_csv(os.path.join(beddir, regions[pic][region_version]), sep = "\t", header = None)
-    regiondf.columns = ["chrom", "start", "end"]
-    regiondf = regiondf[["chrom", "start", "end"]]
+    regiondf.columns = ["chrom", "start", "end", "amplicon_name"]
+    regiondf = regiondf[["chrom", "start", "end", "amplicon_name"]]
     regiondf["region_name"] = regiondf[["chrom", "start", "end"]].apply(
         lambda x: f"region_{x[0]}_{x[1]}_{x[2]}", axis = 1
     )
@@ -144,7 +130,7 @@ def main():
     else:
         print("File already exists, skip counting reads in regions. Reading existing data... ")
         metadata = pd.read_excel(os.path.join(path_to_main_output, f"read_count_in_region.xlsx"))
-    
+
     ##### Process the main COV filesss
     all_covdf = dict()
     for run in metadata.Run.unique():
