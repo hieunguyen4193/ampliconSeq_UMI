@@ -66,7 +66,7 @@ def main():
 
     os.system(f"mkdir -p {path_to_main_output}")
 
-    all_cov_files = [item for item in pathlib.Path(inputdir).glob("*.cov")]
+    all_cov_files = [item for item in pathlib.Path(os.path.join(inputdir)).glob("*/06_methylation_extract/*.cov")]
 
     print(f"Number of samples in this run {run}: {len(all_cov_files)}")
 
