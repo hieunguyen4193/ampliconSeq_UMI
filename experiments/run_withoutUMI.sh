@@ -8,8 +8,8 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 # input args
 
 samplesheet="./SampleSheet_noUMI_runs.csv";
-OUTDIR="";
-WORKDIR=""; 
+OUTDIR="/workdir/outdir";
+WORKDIR="/workdir/work";
 UMI_in_read_or_not="withoutUMI";
 
 BATCH_NAME=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
@@ -23,8 +23,8 @@ mkdir -p ${OUTDIR};
 
 BismarkIndex="/workdir/resources/hg19";
 primer_version="20250526";
-forward_primer_fa="./primers/${primer_version}/Vi_Lung_panel.forward_primers.fa";
-reverse_primer_fa="./primers/${primer_version}/Vi_Lung_panel.reverse_primers.fa";
+forward_primer_fa="../primers/${primer_version}/Vi_Lung_panel.forward_primers.fa";
+reverse_primer_fa="../primers/${primer_version}/Vi_Lung_panel.reverse_primers.fa";
 WORKDIR="${WORKDIR}/${BATCH_NAME}";
 
 nextflow run ../main.nf \
@@ -39,7 +39,7 @@ nextflow run ../main.nf \
     -with-report "${OUTDIR}/report.html" \
     -with-timeline "${OUTDIR}/timeline.html" \
     -with-dag "${OUTDIR}/dag.svg";
-done
+
 
 # loggings all input params
 echo -e "-----------------------------------------------------------------------------" >> ${OUTDIR}/params.log
@@ -60,6 +60,6 @@ echo "forward_primer_fa: $forward_primer_fa" >> ${OUTDIR}/params.log
 echo "reverse_primer_fa: $reverse_primer_fa" >> ${OUTDIR}/params.log
 echo "extract_UMI_from_R1: $extract_UMI_from_R1_sh" >> ${OUTDIR}/params.log
 echo "add_UMI_to_R1_R2_FASTQs: $add_UMI_to_R1_R2_FASTQs_sh" >> ${OUTDIR}/params.log
-echo "workdir: $workdir" >> ${OUTDIR}/params.log
+echo "workdir: $WORKDIR" >> ${OUTDIR}/params.log
 echo -e "-----------------------------------------------------------------------------" >> ${OUTDIR}/params.log
 

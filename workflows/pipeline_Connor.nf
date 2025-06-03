@@ -8,6 +8,7 @@ include { PIPELINE_INIT } from "../subworkflows/pipeline_init.nf"
 include { PROCESS_UMI_AND_TRIM } from "../subworkflows/process_UMI_and_trim.nf"
 include { CONNOR_UMI_PROCESSING } from "../subworkflows/UMI_processing_with_connor.nf"
 include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI } from "../subworkflows/bismark_methylation_calling.nf"
+include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI } from "../subworkflows/bismark_methylation_calling.nf"
 
 // MAIN WORKFLOW: INPUT FASTQS --> PREPROCESS THE UMI --> ALIGN AND CALL METHYLATION
 workflow PIPELINE_CONNOR{
@@ -46,9 +47,6 @@ workflow PIPELINE_CONNOR{
             min_family_size_threshold,
             umt_distance_threshold
             )
-        FASTQ_QC(
-            CONNOR_UMI_PROCESSING.out.connor_ch
-        )
         // align and call methylation using the UMI processed reads
         ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI(
             CONNOR_UMI_PROCESSING.out.connor_ch,
@@ -56,7 +54,7 @@ workflow PIPELINE_CONNOR{
             )
         // align and call methylation using the trimmed reads without UMI
         ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI(
-            PROCESS_UMI_AND_TRIM.out.trimmed_fastqs,
+            PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_without_UMI,
             BismarkIndex
             )
 }
