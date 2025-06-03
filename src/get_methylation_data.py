@@ -14,6 +14,7 @@ from tqdm import tqdm
 tqdm.pandas()
 warnings.filterwarnings("ignore")
 from panel_configs import *
+from helper_functions import *
 
 # EXAMPLES  
 # inputdir = "/media/hieunguyen/HNHD01/raw_data/targetMethyl_analysis/target_methylation_R6782_no_dedup_without_non_directional/06_methylation_extract"
@@ -80,9 +81,13 @@ def main():
     metadata["mode"] = metadata["Run"].apply(lambda x: "directional" if "_without_non_directional" in x else "non_directional")
     metadata["Run"] = run
     metadata["PIC"] = pic
+
+    # harcode: structure of the pipeline output.
     metadata["bam_path"] = metadata["path"].apply(lambda x: str(x)\
                                                     .replace("06_methylation_extract", "05_sorted_bam")\
                                                     .replace(".bedGraph.gz.bismark.zero.cov", ".sorted.bam"))
+    
+    # depending on the input mode, use non-directional or directional input data.
     metadata = metadata[(metadata["mode"] == mode) & (metadata["PIC"] == pic)]
     metadata.to_excel(os.path.join(path_to_main_output, "metadata.xlsx"), index = False)
 

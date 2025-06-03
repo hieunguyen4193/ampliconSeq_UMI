@@ -7,6 +7,6 @@ regions = {
         "CRC_v3.1": "CRC_panel_version_3.1.bed"
     },
     "Truong": {
-        "v1.1": "Truong_amplicon_PBMC_v1.1.bed"
+        "PBMC_v1.1": "Truong_amplicon_PBMC_v1.1.bed"
     }
 }
