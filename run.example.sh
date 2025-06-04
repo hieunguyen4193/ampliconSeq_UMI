@@ -7,7 +7,7 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 #-----
 # input args
 
-samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288.head5.csv";
+samplesheet="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/SampleSheets/SampleSheet_R7288_head5.csv";
 batch_name=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
 
 echo -e "-----"
@@ -24,13 +24,13 @@ consensus_rate=0.6;
 umi_length=6;
 primer_version="20250526";
 extract_UMI_from_R1_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/extract_UMI_from_R1.sh"
-add_UMI_to_R1_R2_FASTQs_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/add_UMI_to_R1_R2_FASTQS.sh"
-forward_primer_fa="./primers/${primer_version}/forward_primers.fa";
-reverse_primer_fa="./primers/${primer_version}/reverse_primers.fa";
-workdir="/media/hieunguyen/HNSD01/${batch_name}";
-# UMI_in_read_or_not="withUMI";
-UMI_in_read_or_not="extractUMIonly"
-trim_algorithm="
+add_UMI_to_R1_R2_FASTQs_sh="/media/hieunguyen/HNSD01/src/ampliconSeq_UMI/src/add_UMI_to_R1_R2_FASTQS_ReadID.sh"
+forward_primer_fa="./primers/${primer_version}/Vi_Lung_panel.forward_primers.fa";
+reverse_primer_fa="./primers/${primer_version}/Vi_Lung_panel.reverse_primers.fa";
+workdir="/media/hieunguyen/HNSD01/work/${batch_name}";
+UMI_in_read_or_not="withUMI";
+# UMI_in_read_or_not="extractUMIonly"
+trim_algorithm=""
 # workdir="./work"
 
     nextflow run main.nf \
@@ -46,7 +46,7 @@ trim_algorithm="
         --extract_UMI_from_R1 "${extract_UMI_from_R1_sh}" \
         --add_UMI_to_R1_R2_FASTQS "${add_UMI_to_R1_R2_FASTQs_sh}" \
         --UMI_in_read_or_not ${UMI_in_read_or_not} \
-        --trim_algorithm ${trim_algorithm}
+        --trim_algorithm ${trim_algorithm} \
         -resume -c ./configs/main.config \
         -w ${workdir} \
         -with-report "${OUTDIR}/report.html" \
@@ -74,4 +74,3 @@ echo "extract_UMI_from_R1: $extract_UMI_from_R1_sh" >> ${OUTDIR}/params.log
 echo "add_UMI_to_R1_R2_FASTQs: $add_UMI_to_R1_R2_FASTQs_sh" >> ${OUTDIR}/params.log
 echo "workdir: $workdir" >> ${OUTDIR}/params.log
 echo -e "-----------------------------------------------------------------------------" >> ${OUTDIR}/params.log
-

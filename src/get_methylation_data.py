@@ -66,7 +66,7 @@ def main():
 
     os.system(f"mkdir -p {path_to_main_output}")
 
-    all_cov_files = [item for item in pathlib.Path(inputdir).glob("*.cov")]
+    all_cov_files = [item for item in pathlib.Path(os.path.join(inputdir)).glob("*/06_methylation_extract/*.cov")]
 
     print(f"Number of samples in this run {run}: {len(all_cov_files)}")
 
@@ -142,7 +142,7 @@ def main():
         for filename in metadata[metadata["Run"] == run]["filename"].unique():
                 path_to_save_cov = os.path.join(path_to_main_output, filename)
                 os.system(f"mkdir -p {path_to_save_cov}")
-
+                print(f"Processing {metadata[metadata["filename"] == filename]["path"].values[0]} ...")
                 covdf = pd.read_csv(metadata[metadata["filename"] == filename]["path"].values[0], header = None, sep = "\t")
                 covdf.columns = ["chrom", "start", "end", "meth_density", "countC", "countT"]
                 covdf = covdf[covdf["chrom"].isin(["X", "Y", "MT"]) == False]
@@ -169,37 +169,38 @@ def main():
                         save_covdf["check_context"] = save_covdf["CpG"].apply(lambda x: "CpG_context" if x in cpgdf["CpG"].values else "False")
                         save_covdf.to_excel(f"{path_to_save_cov}/{region}_{strand_name[strand]}.xlsx", index = False)
 
-    mean_methyldf = pd.DataFrame(data = regiondf.region_name.unique(), columns = ["region"])
-    def get_mean_methyl_in_region(region, filename, strand, remove_non_cpg = True):
-        '''
-        Calculate average methylation density in a region for a given filename and strand.
-        If remove_non_cpg is True, it will only keep CpG context sites and remove others.
-        '''
-        strand_name = {"+": "plus", "-": "minus"}
-        if filename == "CONTROL114":
-            df = pd.read_excel(f"{path_to_control450}/region_version_{region_version}/{region}_strand_{strand_name[strand]}.xlsx")
-            run = "R6447"
-        else:
-            run = metadata[metadata["filename"] == filename]["Run"].values[0]
-            df = pd.read_excel(f"{os.path.join(path_to_main_output, filename)}/{region}_{strand_name[strand]}.xlsx")
-        if df.shape[0] == 0:
-            return "no data available"
-        else:
-            if remove_non_cpg:
-                # keep only CpG context Cs
-                df = df[df["check_context"] == "CpG_context"]
-            df_strand = df[df["strand"] == strand]
-            if df_strand.shape[0] == 0:
-                mean_methyl = f"no read in this region at strand {strand}"
+    if path_to_control450 != "not_given":
+        mean_methyldf = pd.DataFrame(data = regiondf.region_name.unique(), columns = ["region"])
+        def get_mean_methyl_in_region(region, filename, strand, remove_non_cpg = True):
+            '''
+            Calculate average methylation density in a region for a given filename and strand.
+            If remove_non_cpg is True, it will only keep CpG context sites and remove others.
+            '''
+            strand_name = {"+": "plus", "-": "minus"}
+            if filename == "CONTROL114":
+                df = pd.read_excel(f"{path_to_control450}/region_version_{region_version}/{region}_strand_{strand_name[strand]}.xlsx")
+                run = "R6447"
             else:
-                mean_methyl = df_strand.meth_density.mean()
-            return mean_methyl
+                run = metadata[metadata["filename"] == filename]["Run"].values[0]
+                df = pd.read_excel(f"{os.path.join(path_to_main_output, filename)}/{region}_{strand_name[strand]}.xlsx")
+            if df.shape[0] == 0:
+                return "no data available"
+            else:
+                if remove_non_cpg:
+                    # keep only CpG context Cs
+                    df = df[df["check_context"] == "CpG_context"]
+                df_strand = df[df["strand"] == strand]
+                if df_strand.shape[0] == 0:
+                    mean_methyl = f"no read in this region at strand {strand}"
+                else:
+                    mean_methyl = df_strand.meth_density.mean()
+                return mean_methyl
 
-    for filename in list(all_covdf.keys()) + ["CONTROL114"]:
-        for strand in ["+", "-"]:
-            mean_methyldf[f"{filename}_{strand}"] = mean_methyldf["region"].apply(lambda x: get_mean_methyl_in_region(x, filename, strand = strand, remove_non_cpg = True))
+        for filename in list(all_covdf.keys()) + ["CONTROL114"]:
+            for strand in ["+", "-"]:
+                mean_methyldf[f"{filename}_{strand}"] = mean_methyldf["region"].apply(lambda x: get_mean_methyl_in_region(x, filename, strand = strand, remove_non_cpg = True))
 
-    mean_methyldf.to_excel(os.path.join(path_to_main_output, f"mean_methyl_in_region_compare_CONTROL114.xlsx"), index = False)
+        mean_methyldf.to_excel(os.path.join(path_to_main_output, f"mean_methyl_in_region_compare_CONTROL114.xlsx"), index = False)
              
 if __name__ == '__main__':
     main()
