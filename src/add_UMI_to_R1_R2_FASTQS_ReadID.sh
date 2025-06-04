@@ -42,7 +42,7 @@ paste <(zcat ${input_fastq1} | awk 'NR%4==1') \
     <(zcat ${input_fastq1} | awk 'NR%4==2') \
     <(zcat ${input_fastq1} | awk 'NR%4==3') \
     <(zcat ${input_fastq1} | awk 'NR%4==0') | \
-    awk '{print $1_$2_$3"\n"$4"\n"$5"\n"$6}' | \
+    awk '{print $1"_"$2"_"$3"\n"$4"\n"$5"\n"$6}' | \
     gzip > ${outputdir}/${sample_id}_R1.UMIprocessed.fastq.gz
 
 paste <(zcat ${input_fastq2} | awk 'NR%4==1') \
@@ -51,7 +51,7 @@ paste <(zcat ${input_fastq2} | awk 'NR%4==1') \
     <(zcat ${input_fastq2} | awk 'NR%4==2') \
     <(zcat ${input_fastq2} | awk 'NR%4==3') \
     <(zcat ${input_fastq2} | awk 'NR%4==0') | \
-    awk '{print $1_$2_$3"\n"$4"\n"$5"\n"$6}' | \
+    awk '{print $1"_"$2"_"$3"\n"$4"\n"$5"\n"$6}' | \
     gzip > ${outputdir}/${sample_id}_R2.UMIprocessed.fastq.gz
 
 # EOF

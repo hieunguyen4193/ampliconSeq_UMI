@@ -1,5 +1,3 @@
-include { add_UMI_to_R2_seqs } from "../modules/add_UMI_to_R2_seqs.nf"
-
 workflow PIPELINE_INIT {
     take:
     //  path to the input samplesheet .csv file, the sampleshet file should contain the columns SampleID, FASTQ1, and FASTQ2

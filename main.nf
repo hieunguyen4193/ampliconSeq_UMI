@@ -28,7 +28,8 @@ workflow {
             file(params.extract_UMI_from_R1),
             file(params.add_UMI_to_R1_R2_FASTQS),
             params.min_family_size_threshold,
-            params.umt_distance_threshold
+            params.umt_distance_threshold,
+            file(params.add_UMI_to_unmappedBAM)
         )
     } else if (params.UMI_in_read_or_not == "withoutUMI_V1") {
         PIPELINE_NO_UMI_V1_1(

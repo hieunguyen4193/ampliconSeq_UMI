@@ -23,6 +23,7 @@ workflow PIPELINE_CONNOR{
         add_UMI_to_R1_R2_FASTQS
         min_family_size_threshold
         umt_distance_threshold
+        add_UMI_to_unmappedBAM
 
     main:
         PIPELINE_INIT(
@@ -45,7 +46,8 @@ workflow PIPELINE_CONNOR{
             consensus_rate,
             umi_length,
             min_family_size_threshold,
-            umt_distance_threshold
+            umt_distance_threshold,
+            add_UMI_to_unmappedBAM
             )
         // align and call methylation using the UMI processed reads
         ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI(

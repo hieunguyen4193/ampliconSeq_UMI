@@ -6,10 +6,10 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 
 #-----
 # input args
-
+output_version="20250604"
 samplesheet="./SampleSheet_UMI_runs.csv";
-OUTDIR="/workdir/outdir";
-WORKDIR="/workdir/work"; 
+OUTDIR="/workdir/outdir/${output_version}";
+WORKDIR="/workdir/work/${output_version}"; 
 
 BATCH_NAME=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
 
@@ -27,8 +27,8 @@ for umt_distance_threshold in 0 1;do \
         consensus_rate=0.6;
         umi_length=6;
         extract_UMI_from_R1_sh="../src/extract_UMI_from_R1.sh"
-        add_UMI_to_R1_R2_FASTQs_sh="../src/add_UMI_to_R1_R2_FASTQS.sh"
-
+        add_UMI_to_R1_R2_FASTQs_sh="../src/add_UMI_to_R1_R2_FASTQS_ReadID.sh"
+        add_UMI_to_unmappedBAM="../src/add_UMI_to_BAM_file.sh"
         OUTDIR="${OUTDIR}/${BATCH_NAME}/UMT_DISTANCE_${umt_distance_threshold}"
         mkdir -p ${OUTDIR};
 
@@ -49,6 +49,7 @@ for umt_distance_threshold in 0 1;do \
                 --extract_UMI_from_R1 "${extract_UMI_from_R1_sh}" \
                 --add_UMI_to_R1_R2_FASTQS "${add_UMI_to_R1_R2_FASTQs_sh}" \
                 --UMI_in_read_or_not "${UMI_in_read_or_not}" \
+                --add_UMI_to_unmappedBAM ${add_UMI_to_unmappedBAM} \
                 -resume -c ../configs/main.config \
                 -w ${WORKDIR} \
                 -with-report "${OUTDIR}/report.html" \
