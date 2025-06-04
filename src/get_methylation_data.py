@@ -142,7 +142,7 @@ def main():
         for filename in metadata[metadata["Run"] == run]["filename"].unique():
                 path_to_save_cov = os.path.join(path_to_main_output, filename)
                 os.system(f"mkdir -p {path_to_save_cov}")
-
+                print(f"Processing {metadata[metadata["filename"] == filename]["path"].values[0]} ...")
                 covdf = pd.read_csv(metadata[metadata["filename"] == filename]["path"].values[0], header = None, sep = "\t")
                 covdf.columns = ["chrom", "start", "end", "meth_density", "countC", "countT"]
                 covdf = covdf[covdf["chrom"].isin(["X", "Y", "MT"]) == False]
