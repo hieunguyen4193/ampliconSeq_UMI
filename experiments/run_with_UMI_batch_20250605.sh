@@ -1,3 +1,4 @@
+# Runs: R7331', 'R7332', 'R7347', 'R7353'
 # nextflow on conda in my home server
 source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 
@@ -6,9 +7,10 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 
 #-----
 # input args
-output_version="20250604"
-samplesheet="./SampleSheet_UMI_runs.csv";
 
+output_version="20250605"
+samplesheet="./SampleSheet_batch_${output_version}.csv";
+primer_version=${output_version};
 BATCH_NAME=$(echo $samplesheet | xargs -n 1 basename | cut -d '.' -f 1); 
 
 echo -e "-----"
@@ -20,9 +22,9 @@ for umt_distance_threshold in 0 1;do \
         OUTDIR="/workdir/outdir/${output_version}";
         WORKDIR="/workdir/work/${output_version}"; 
         BismarkIndex="/workdir/resources/hg19";
-        primer_version="20250526";
-        forward_primer_fa="../primers/${primer_version}/Vi_Lung_panel.forward_primers.fa";
-        reverse_primer_fa="../primers/${primer_version}/Vi_Lung_panel.reverse_primers.fa";
+        
+        forward_primer_fa="../primers/${primer_version}/Vi_merge_all_primers.forward_primers.fa";
+        reverse_primer_fa="../primers/${primer_version}/Vi_merge_all_primers.reverse_primers.fa";
         min_family_size_threshold=3;
         consensus_rate=0.6;
         umi_length=6;
