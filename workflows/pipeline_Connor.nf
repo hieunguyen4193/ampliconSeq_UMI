@@ -9,9 +9,10 @@ include { PROCESS_UMI_AND_TRIM } from "../subworkflows/process_UMI_and_trim.nf"
 include { CONNOR_UMI_PROCESSING } from "../subworkflows/UMI_processing_with_connor.nf"
 include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI } from "../subworkflows/bismark_methylation_calling.nf"
 include { ALIGNMENT_AND_METHYLATION_CALLING as ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI } from "../subworkflows/bismark_methylation_calling.nf"
+include { TRIM } from "../subworkflows/trim.nf"
 
 // MAIN WORKFLOW: INPUT FASTQS --> PREPROCESS THE UMI --> ALIGN AND CALL METHYLATION
-workflow PIPELINE_CONNOR{
+workflow PIPELINE_CONNOR {
     take:
         input_SampleSheet // path to the input samplesheet .csv file, the sampleshet file should contain the columns SampleID, FASTQ1, and FASTQ2
         BismarkIndex
@@ -24,39 +25,55 @@ workflow PIPELINE_CONNOR{
         min_family_size_threshold
         umt_distance_threshold
         add_UMI_to_unmappedBAM
+        UMI_in_read_or_not
+        trim_algorithm
 
     main:
-        PIPELINE_INIT(
-            input_SampleSheet
-        )   
+        PIPELINE_INIT(input_SampleSheet)   
         FASTQ_QC(
             PIPELINE_INIT.out.samplesheet
         )
-        PROCESS_UMI_AND_TRIM(
-            PIPELINE_INIT.out.samplesheet,
-            umi_length,
-            forward_primer_fa,
-            reverse_primer_fa,
-            extract_UMI_from_R1,
-            add_UMI_to_R1_R2_FASTQS
+        if (UMI_in_read_or_not == "withUMI") {
+            PROCESS_UMI_AND_TRIM(
+                        PIPELINE_INIT.out.samplesheet,
+                        umi_length,
+                        forward_primer_fa,
+                        reverse_primer_fa,
+                        extract_UMI_from_R1,
+                        add_UMI_to_R1_R2_FASTQS
+                        )
+            CONNOR_UMI_PROCESSING(
+                PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_with_UMI,
+                BismarkIndex,
+                consensus_rate,
+                umi_length,
+                min_family_size_threshold,
+                umt_distance_threshold,
+                add_UMI_to_unmappedBAM
+                )
+            // align and call methylation using the UMI processed reads
+            ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI(
+                CONNOR_UMI_PROCESSING.out.connor_ch,
+                BismarkIndex
+                )
+            // align and call methylation using the trimmed reads without UMI
+            ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI(
+                PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_without_UMI,
+                BismarkIndex
+                )
+        } else if (UMI_in_read_or_not == "withoutUMI") {
+            TRIM(
+                PIPELINE_INIT.out.samplesheet,
+                forward_primer_fa,
+                reverse_primer_fa,
+                trim_algorithm
             )
-        CONNOR_UMI_PROCESSING(
-            PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_with_UMI,
-            BismarkIndex,
-            consensus_rate,
-            umi_length,
-            min_family_size_threshold,
-            umt_distance_threshold,
-            add_UMI_to_unmappedBAM
-            )
-        // align and call methylation using the UMI processed reads
-        ALIGNMENT_AND_METHYLATION_CALLING_WITH_UMI(
-            CONNOR_UMI_PROCESSING.out.connor_ch,
-            BismarkIndex
-            )
-        // align and call methylation using the trimmed reads without UMI
-        ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI(
-            PROCESS_UMI_AND_TRIM.out.trimmed_fastqs_without_UMI,
-            BismarkIndex
-            )
+
+            ALIGNMENT_AND_METHYLATION_CALLING_WITHOUT_UMI(
+                TRIM.out.trimmed_fastqs,
+                BismarkIndex
+                )
+        } else {
+            error "Please specify the UMI in read or not in the params file, either withUMI or withoutUMI"
+        }
 }
