@@ -18,7 +18,7 @@ echo -e "Working on batch: ${BATCH_NAME}\n";
 echo -e "-----"
 
 # umt_distance_threshold=1;
-for umt_distance_threshold in 0 1;do \
+for umt_distance_threshold in 0;do \
         OUTDIR="/workdir/outdir/${output_version}";
         WORKDIR="/workdir/work/${output_version}"; 
         BismarkIndex="/workdir/resources/hg19";
@@ -31,13 +31,15 @@ for umt_distance_threshold in 0 1;do \
         extract_UMI_from_R1_sh="../src/extract_UMI_from_R1.sh"
         add_UMI_to_R1_R2_FASTQs_sh="../src/add_UMI_to_R1_R2_FASTQS_ReadID.sh"
         add_UMI_to_unmappedBAM="../src/add_UMI_to_BAM_file.sh"
+        trim_algorithm="CutAdapt"
+        UMI_in_read_or_not="withoutUMI"
+
         OUTDIR="${OUTDIR}/${BATCH_NAME}/UMT_DISTANCE_${umt_distance_threshold}"
         mkdir -p ${OUTDIR};
 
         WORKDIR="${WORKDIR}/${BATCH_NAME}/UMT_DISTANCE_${umt_distance_threshold}";
         mkdir -p ${WORKDIR};
 
-        UMI_in_read_or_not="withUMI";
         nextflow run ../main.nf \
                 --SAMPLE_SHEET "${samplesheet}" \
                 --OUTDIR "${OUTDIR}" \
@@ -52,6 +54,8 @@ for umt_distance_threshold in 0 1;do \
                 --add_UMI_to_R1_R2_FASTQS "${add_UMI_to_R1_R2_FASTQs_sh}" \
                 --UMI_in_read_or_not "${UMI_in_read_or_not}" \
                 --add_UMI_to_unmappedBAM ${add_UMI_to_unmappedBAM} \
+                --UMI_in_read_or_not "${UMI_in_read_or_not}" \
+                --trim_algorithm "${trim_algorithm}" \
                 -resume -c ../configs/main.config \
                 -w ${WORKDIR} \
                 -with-report "${OUTDIR}/report.html" \
