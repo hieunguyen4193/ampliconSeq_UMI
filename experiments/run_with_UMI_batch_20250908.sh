@@ -8,7 +8,8 @@ source /home/hieunguyen/miniconda3/bin/activate && conda activate nextflow_dev
 #-----
 # input args
 # i=1;for file in $files;do echo -e "SampleID,FASTQ1,FASTQ2" >> SampleSheet_batch_20250908.batch${i}.csv && echo $file >> SampleSheet_batch_20250908.batch${i}.csv && i=$((i+1));done
-for i in {1..16};do \
+i=1;
+# for i in {1..16};do \
         output_version="20250908.batch${i}"
         samplesheet="./SampleSheet_batch_${output_version}.csv";
         primer_version="20250605";
@@ -81,4 +82,4 @@ for i in {1..16};do \
                 echo "workdir: $WORKDIR" >> ${OUTDIR}/params.log;
                 echo -e "-----------------------------------------------------------------------------" >> ${OUTDIR}/params.log;
         done
-done;
+# done;
